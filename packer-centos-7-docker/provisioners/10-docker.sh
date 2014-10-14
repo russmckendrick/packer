@@ -33,3 +33,28 @@ docker rmi jpetazzo/nsenter
 curl -L https://github.com/docker/fig/releases/download/0.5.2/linux > /usr/local/bin/fig
 chmod 755 /usr/local/bin/fig
 /usr/local/bin/fig --version
+
+# Pull down the NGINX Route imgage
+docker pull russmckendrick/nginx-proxy
+
+# Add the systemd service file
+cat >> /usr/lib/systemd/system/docker-nginx-router.service << CONTENT
+[Unit]
+Description=NGINX Router
+Requires=docker.service
+After=docker.service
+
+[Service]
+TimeoutStartSec=0
+ExecStartPre=-/usr/bin/docker kill router
+ExecStartPre=-/usr/bin/docker rm router
+ExecStart=/usr/bin/docker run -p 80:80 --name="router" -v /var/run/docker.sock:/tmp/docker.sock -t russmckendrick/nginx-proxy
+ExecStop=-/usr/bin/docker stop router
+
+[Install]
+WantedBy=multi-user.target
+CONTENT
+
+# Start the NGINX router as a service
+systemctl enable docker-nginx-router
+systemctl start docker-nginx-router
