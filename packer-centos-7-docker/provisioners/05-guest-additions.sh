@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -eux
 
 yum -y install bzip2 wget perl gcc kernel-devel kernel-headers
 mkdir /tmp/virtualbox

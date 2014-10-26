@@ -1,8 +1,6 @@
-#!/bin/sh
+#!/bin/bash -eux
 
-set -e
-
-# docker
+# Docker
 
 # Install the latest version of Docker
 echo "[goldmann-docker-io]
