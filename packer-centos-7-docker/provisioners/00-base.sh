@@ -2,12 +2,15 @@
 
 # Install some basics and update
 
-yum install -y wget nfs-server rpcbind git vim-common vim-enhanced && yum update -y
+echo "" >> /etc/exports
 
-# Enable NFS
+yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common
 
-systemctl enable nfs-server.service
-systemctl enable rpcbind.service
+systemctl enable rpcbind
+systemctl enable nfs-lock
+systemctl enable nfs-idmap
+
+yum update -y
 
 # update root certs
 wget -O/etc/pki/tls/certs/ca-bundle.crt http://curl.haxx.se/ca/cacert.pem

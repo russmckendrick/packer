@@ -1,7 +1,7 @@
 #!/bin/bash -eux
 
 # These were only needed for building VMware/Virtualbox extensions:
-yum -y remove glibc-headers glibc-devel libmpc mpfr kernel-devel kernel-headers cpp gcc bzip2 wget perl* 
+yum -y remove glibc-headers glibc-devel libmpc mpfr kernel-devel kernel-headers cpp gcc 
 yum -y clean all
 rm -rf VBoxGuestAdditions_*.iso VBoxGuestAdditions_*.iso.?
 
