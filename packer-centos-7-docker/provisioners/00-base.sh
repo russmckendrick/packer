@@ -2,8 +2,6 @@
 
 # Install some basics and update
 
-echo "" >> /etc/exports
-
 yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common
 
 systemctl enable rpcbind
