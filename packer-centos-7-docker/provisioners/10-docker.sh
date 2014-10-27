@@ -55,3 +55,7 @@ CONTENT
 # Start the NGINX router as a service
 systemctl enable docker-nginx-router
 systemctl start docker-nginx-router
+
+# Add the mysql connect script
+curl -L https://j.mp/1nJOJ5V > /usr/local/bin/connect
+chmod 755 /usr/local/bin/connect
