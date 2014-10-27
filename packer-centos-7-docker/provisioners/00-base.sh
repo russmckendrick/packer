@@ -2,7 +2,7 @@
 
 # Install some basics and update
 
-yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common
+yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common mariadb
 
 systemctl enable rpcbind
 systemctl enable nfs-lock
