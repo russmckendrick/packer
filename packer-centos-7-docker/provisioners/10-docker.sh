@@ -53,6 +53,9 @@ echo "========================================================================"
 # Add the vagrant user to the docker group
 usermod -a -G docker vagrant
 
+# Adding the mysql user and group for Docker stuff
+groupadd mysql -g 27 && useradd -g mysql mysql -u 27
+
 # Add the systemd service file
 cat >> /usr/lib/systemd/system/docker-nginx-router.service << CONTENT
 [Unit]
