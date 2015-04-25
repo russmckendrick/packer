@@ -1,0 +1,72 @@
+{
+  "variables": {
+    "version": "{{env `VERSION`}}",
+    "mirror": "http://centos.mirroring.pulsant.co.uk"
+  },
+  "provisioners": [
+    {
+      "type": "shell",
+      "execute_command": "sudo {{.Vars}} sh {{.Path}}",
+      "scripts": [
+        "scripts/base.sh",      
+        "scripts/vagrant.sh",
+        "scripts/vmtools.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ]
+    }
+  ],
+  "post-processors": [
+    {
+      "type": "vagrant",
+      "output": "CentOS-7.1.1503-x86_64-{{.Provider}}.box"
+    }
+  ],
+  "builders": [
+    {
+      "type": "virtualbox-iso",
+      "iso_url": "{{user `mirror`}}/7.1.1503/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
+      "iso_checksum": "7cf1ac8da13f54d6be41e3ccf228dc5bb35792f515642755ff4780d5714d4278",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "disk_size": "100000",
+      "hard_drive_interface": "sata",
+      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+      "guest_additions_sha256": "c5e46533a6ff8df177ed5c9098624f6cec46ca392bab16de2017195580088670",
+      "guest_os_type": "RedHat_64",
+      "headless": "false",
+      "http_directory": "http",
+      "shutdown_command": "sudo /sbin/halt -p",
+      "vboxmanage": [
+        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
+        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+      ]
+    },
+    {
+      "type": "vmware-iso",
+      "iso_url": "{{user `mirror`}}/7.1.1503/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
+      "iso_checksum": "7cf1ac8da13f54d6be41e3ccf228dc5bb35792f515642755ff4780d5714d4278",
+      "iso_checksum_type": "sha256",
+      "ssh_username": "vagrant",
+      "ssh_password": "vagrant",
+      "disk_size": "100000",
+      "tools_upload_flavor": "linux",
+      "guest_os_type": "centos-64",
+      "headless": "true",
+      "shutdown_command": "sudo /sbin/halt -p",
+      "http_directory": "http",
+      "boot_command": [
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+      ],
+      "vmx_data": {
+        "memsize": "512",
+        "numvcpus": "1",
+        "vhv.enable": "TRUE"
+      }
+    }
+  ]
+}

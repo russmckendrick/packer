@@ -2,7 +2,11 @@
 
 # Install some basics and update
 
+<<<<<<< HEAD:CentOS7/scripts/base.sh
+yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common bzip2 net-tools perl
+=======
 yum install -y wget nfs-utils rpcbind git vim-enhanced vim-common mariadb
+>>>>>>> origin/master:packer-centos-7-docker/provisioners/00-base.sh
 
 systemctl enable rpcbind
 systemctl enable nfs-lock
