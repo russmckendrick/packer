@@ -19,7 +19,8 @@
   "post-processors": [
     {
       "type": "vagrant",
-      "output": "CentOS-7.1.1503-x86_64-{{.Provider}}.box"
+      "output": "CentOS-7.1.1503-x86_64-{{.Provider}}.box",
+      "compression_level": 9
     }
   ],
   "builders": [
