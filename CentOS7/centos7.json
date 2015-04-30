@@ -8,63 +8,79 @@
       "type": "shell",
       "execute_command": "sudo {{.Vars}} sh {{.Path}}",
       "scripts": [
-        "scripts/base.sh",      
-        "scripts/vagrant.sh",
+        "scripts/base.sh",
         "scripts/vmtools.sh",
         "scripts/cleanup.sh",
         "scripts/zerodisk.sh"
-      ]
+      ],
+      "only": ["centos-7-vmware"]
+    }, {
+      "type": "shell",
+      "scripts": [
+        "scripts/base.sh",
+        "scripts/cloud.sh",
+        "scripts/cleanup.sh",
+        "scripts/zerodisk.sh"
+      ],
+      "only": ["centos-7-cloud-kvm"]
     }
   ],
   "post-processors": [
     {
-      "type": "vagrant",
-      "output": "CentOS-7.1.1503-x86_64-{{.Provider}}.box",
-      "compression_level": 9
+      "type": "vagrant-vmware-ovf",
+      "compression_level": "9",
+      "only": ["centos-7-vmware"]
     }
   ],
   "builders": [
     {
-      "type": "virtualbox-iso",
-      "iso_url": "{{user `mirror`}}/7.1.1503/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
+      "name": "centos-7-cloud-kvm",
+      "type": "qemu",
+      "qemuargs": [
+        [ "-m", "1024m" ]
+      ],
       "iso_checksum": "7cf1ac8da13f54d6be41e3ccf228dc5bb35792f515642755ff4780d5714d4278",
       "iso_checksum_type": "sha256",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
-      ],
-      "disk_size": "100000",
-      "hard_drive_interface": "sata",
-      "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
-      "guest_additions_sha256": "c5e46533a6ff8df177ed5c9098624f6cec46ca392bab16de2017195580088670",
-      "guest_os_type": "RedHat_64",
-      "headless": "false",
+      "iso_url": "http://mirror.bytemark.co.uk/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
+      "ssh_wait_timeout": "30s",
+      "shutdown_command": "shutdown -P now",
+      "disk_size": "10140",
+      "format": "qcow2",
+      "headless": "true",
+      "accelerator": "kvm",
       "http_directory": "http",
-      "shutdown_command": "sudo /sbin/halt -p",
-      "vboxmanage": [
-        [ "modifyvm", "{{.Name}}", "--memory", "512" ],
-        [ "modifyvm", "{{.Name}}", "--cpus", "1" ]
+      "http_port_min": "10082",
+      "http_port_max": "10089",
+      "ssh_host_port_min": "2222",
+      "ssh_host_port_max": "2229",
+      "ssh_username": "root",
+      "ssh_password": "changeme",
+      "ssh_port": "22",
+      "ssh_wait_timeout": "90m",
+      "net_device": "virtio-net",
+      "disk_interface": "virtio",
+      "boot_command": [
+        "<tab> append initrd=initrd.img inst.text inst.ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/openstack-kvm-ks.cfg<enter><wait>"
       ]
     },
     {
+      "name": "centos-7-vmware",
       "type": "vmware-iso",
       "iso_url": "{{user `mirror`}}/7.1.1503/isos/x86_64/CentOS-7-x86_64-Minimal-1503-01.iso",
       "iso_checksum": "7cf1ac8da13f54d6be41e3ccf228dc5bb35792f515642755ff4780d5714d4278",
       "iso_checksum_type": "sha256",
-      "ssh_username": "vagrant",
-      "ssh_password": "vagrant",
-      "disk_size": "100000",
-      "tools_upload_flavor": "linux",
+      "ssh_username": "packer",
+      "ssh_password": "packer",
+      "disk_size": "10000",
       "guest_os_type": "centos-64",
       "headless": "true",
       "shutdown_command": "sudo /sbin/halt -p",
       "http_directory": "http",
       "boot_command": [
-        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ks.cfg<enter><wait>"
+        "<tab> text ks=http://{{ .HTTPIP }}:{{ .HTTPPort }}/vmware-ks.cfg<enter><wait>"
       ],
       "vmx_data": {
-        "memsize": "512",
+        "memsize": "1024",
         "numvcpus": "1",
         "vhv.enable": "TRUE"
       }
