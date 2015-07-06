@@ -33,7 +33,7 @@ The Cloud Images are build on the following guidelines:
 
 ```bash
 # start the installation
-packer build -only=centos-7-cloud-kvm rhel7.json
+packer build -only=centos-7-cloud-kvm centos7.json
 
 # shrink the image size
 qemu-img convert -c -f qcow2 -O qcow2 -o cluster_size=2M output-centos-7-cloud-kvm/packer-centos-7-cloud-kvm.qcow2 output-centos-7-cloud-kvm/packer-centos-7-cloud-kvm.compressed.qcow2
@@ -46,7 +46,7 @@ glance image-create --name "CentOS 7" --container-format ovf --disk-format qcow2
 
 ```bash
 # start the installation
-packer build -only=centos-7-vmware rhel7.json
+packer build -only=centos-7-vmware centos7.json
 ```
 
 ## Meta Data Server
