@@ -1,6 +1,6 @@
 if [[ $PACKER_BUILDER_TYPE =~ virtualbox ]]; then
 VBOX_VERSION=$(cat /home/vagrant/.vbox_version)
-yum -y install bzip2 wget perl gcc kernel-devel kernel-headers 
+yum -y install bzip2 wget perl gcc kernel-devel kernel-headers
 cd /tmp
 mount -o loop /home/vagrant/VBoxGuestAdditions_$VBOX_VERSION.iso /mnt
 sh /mnt/VBoxLinuxAdditions.run
