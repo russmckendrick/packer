@@ -49,6 +49,16 @@
       "type": "vagrant-vmware-ovf",
       "compression_level": "9",
       "only": ["centos-7-vmware"]
+    },
+    {
+      "type": "atlas",
+      "token": "{{user `atlas_token`}}",
+      "artifact": "russmckendrick/centos",
+      "artifact_type": "vagrant",
+      "metadata": {
+        "created_at": "{{timestamp}}"
+      },
+      "only": ["vagrant-vmware", "vagrant-virtualbox"]
     }
   ],
   "builders": [
