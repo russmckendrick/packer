@@ -1,6 +1,6 @@
 # Packer Image Builds
 
-## Introduction - CentOS 7
+## CentOS 7
 
 This repository provides a means to build minimal CentOS 7 boxes for both OpenStack (KVM) & VMware stacks. The focus is to:
 
@@ -32,7 +32,7 @@ The Cloud Images are build on the following guidelines:
 
 ```bash
 # start the installation
-packer build -only=centos-7-cloud-kvm centos7.json
+packer build -only=centos-7-cloud-kvm template.json
 
 # shrink the image size
 qemu-img convert -c -f qcow2 -O qcow2 -o cluster_size=2M output-centos-7-cloud-kvm/packer-centos-7-cloud-kvm output-centos-7-cloud-kvm/packer-centos-7-cloud-kvm.compressed.qcow2
@@ -54,7 +54,7 @@ We recommend to configure the route in DHCP instead of on the image.
 
 ```bash
 # start the installation
-packer build -only=centos-7-vmware centos7.json
+packer build -only=centos-7-vmware template.json
 ```
 
 ## Contributors
