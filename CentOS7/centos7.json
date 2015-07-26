@@ -1,9 +1,7 @@
 {
   "variables": {
     "version": "{{env `VERSION`}}",
-    "mirror": "http://centos.mirroring.pulsant.co.uk",
-    "artifact": "russmckendrick/centos7",
-    "artifact-version": "0.0.1"
+    "mirror": "http://centos.mirroring.pulsant.co.uk"
   },
   "provisioners": [
     {
@@ -45,8 +43,7 @@
       "type": "vagrant",
       "output": "CentOS-7.1.1503-x86_64-{{.Provider}}.box",
       "compression_level": "9",
-      "only": ["vagrant-vmware", "vagrant-virtualbox"],
-      "keep_input_artifact": false
+      "only": ["vagrant-vmware", "vagrant-virtualbox"]
     },
     {
       "type": "vagrant-vmware-ovf",
@@ -54,24 +51,14 @@
       "only": ["centos-7-vmware"]
     },
     {
-        "type": "atlas",
-        "only": ["vagrant-vmware"],
-        "artifact": "{{user `artifact`}}",
-        "artifact_type": "vagrant.box",
-        "metadata": {
-            "provider": "vmware_desktop",
-            "version": "{{user `artifact-version`}}"
-        }
-    },
-    {
-        "type": "atlas",
-        "only": ["vagrant-virtualbox"],
-        "artifact": "{{user `artifact`}}",
-        "artifact_type": "vagrant.box",
-        "metadata": {
-            "provider": "virtualbox",
-            "version": "{{user `artifact-version`}}"
-        }
+      "type": "atlas",
+      "token": "{{user `atlas_token`}}",
+      "artifact": "russmckendrick/centos",
+      "artifact_type": "vagrant",
+      "metadata": {
+        "created_at": "{{timestamp}}"
+      },
+      "only": ["vagrant-vmware", "vagrant-virtualbox"]
     }
   ],
   "builders": [
